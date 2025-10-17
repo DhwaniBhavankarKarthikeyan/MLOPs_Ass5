@@ -104,3 +104,32 @@ stages:
       hash: md5
       md5: 642406e521a02a9c28b4029423721dc2
       size: 107250
+  model_evaluation:
+    cmd: python -m src.model_evaluation
+    deps:
+    - path: data/processed/test_tfidf.csv
+      hash: md5
+      md5: 095f40dbe4ff7750347773498ad6890c
+      size: 13340131
+    - path: model/model.pkl
+      hash: md5
+      md5: cb2e17796c3732bc0dd3f65bf102633c
+      size: 15876220
+    - path: params.yaml
+      hash: md5
+      md5: e9563ccbfd02a7100831b35a8765db68
+      size: 132
+    - path: src/model_evaluation.py
+      hash: md5
+      md5: 737585ec4749fc4bb9861f17b1338b1d
+      size: 4614
+    outs:
+    - path: dvclive
+      hash: md5
+      md5: 8e15498379159b5d90272af603905111.dir
+      size: 254
+      nfiles: 5
+    - path: reports/metrics.json
+      hash: md5
+      md5: 1d339f412c145ab363e4d4c8183fdc3b
+      size: 125
