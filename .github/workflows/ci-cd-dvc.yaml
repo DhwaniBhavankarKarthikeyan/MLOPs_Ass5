@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
 
 permissions:
-  contents: read
+  contents: write  # Need write to commit back in GitHub Actions
 
 jobs:
   unit-tests:
@@ -56,8 +56,16 @@ jobs:
 
       - name: Configure DVC remote
         run: |
-          dvc remote add -f aws ${{ secrets.DVC_S3_URL }}
+          dvc remote add -f aws ${{ secrets.DVC_S3_URL }} || echo "Remote already exists"
           dvc remote default aws
+
+      - name: Commit DVC outputs if needed
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          dvc commit data/raw/train_data.csv || echo "DVC output already committed"
+          git add .gitignore
+          git commit -m "Commit DVC outputs" || echo "Nothing to commit"
 
       - name: Run DVC pipeline
         run: dvc repro
