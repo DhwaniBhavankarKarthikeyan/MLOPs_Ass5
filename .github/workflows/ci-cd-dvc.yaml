@@ -90,39 +90,4 @@ jobs:
           name: dvclive
           path: dvclive
 
-  build-and-push-image:
-    needs: train-and-push-artifacts
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    continue-on-error: true   
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      
-      - name: Install DVC and pull
-        run: |
-          pip install --upgrade pip
-          pip install dvc[s3] fastapi uvicorn
-          dvc pull -r aws || true   # <--- ignore pull errors
-      
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-        continue-on-error: true   # <--- ignore login errors
-      
-      - name: Build, tag, and push Docker image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: spam-classifier
-          IMAGE_TAG: latest
-        run: |
-          aws ecr create-repository --repository-name $ECR_REPOSITORY || true
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . || true
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG || true
-
+  
