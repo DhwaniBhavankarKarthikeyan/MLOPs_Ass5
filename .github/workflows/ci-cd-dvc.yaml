@@ -7,7 +7,6 @@ on:
     branches: [ main, master ]
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
@@ -46,19 +45,14 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
-      - name: Debug AWS inputs
-        run: |
-          echo "Role: ${{ secrets.AWS_ROLE_TO_ASSUME }}"
-          echo "Region: ${{ secrets.AWS_REGION }}"
-          echo "S3: ${{ secrets.DVC_S3_URL }}"
-          
-      - name: Configure AWS credentials (OIDC)
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+          pip install dvc[s3] dvclive
+
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-            role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-            aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Configure DVC remote
         run: |
@@ -101,10 +95,11 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       
-      - name: Install DVC and pull
+      - name: Install DVC and pull artifacts
         run: |
           pip install --upgrade pip
           pip install dvc[s3] fastapi uvicorn
@@ -120,6 +115,6 @@ jobs:
           ECR_REPOSITORY: spam-classifier
           IMAGE_TAG: latest
         run: |
-          aws ecr create-repository --repository-name $ECR_REPOSITORY
+          aws ecr create-repository --repository-name $ECR_REPOSITORY || echo "Repo already exists"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
