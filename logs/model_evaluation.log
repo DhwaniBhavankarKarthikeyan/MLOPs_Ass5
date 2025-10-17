@@ -1,0 +1,10 @@
+2025-10-17 10:03:18,325 - model_evaluation - DEBUG - Parameters retrieved from params.yaml
+2025-10-17 10:03:18,596 - model_evaluation - DEBUG - Model loaded from ./model/model.pkl
+2025-10-17 10:03:18,762 - model_evaluation - DEBUG - Test Data Loaded from ./data/processed/test_tfidf.csv
+2025-10-17 10:03:18,929 - model_evaluation - DEBUG - Model Evaluation are accuracy: 0.968211 , precision : 1.000000, recall : 0.775641, auc: 0.887821
+2025-10-17 10:03:19,100 - model_evaluation - ERROR - Unexpected error : Empty git repo
+2025-10-17 10:05:25,288 - model_evaluation - DEBUG - Parameters retrieved from params.yaml
+2025-10-17 10:05:25,554 - model_evaluation - DEBUG - Model loaded from ./model/model.pkl
+2025-10-17 10:05:25,734 - model_evaluation - DEBUG - Test Data Loaded from ./data/processed/test_tfidf.csv
+2025-10-17 10:05:25,903 - model_evaluation - DEBUG - Model Evaluation are accuracy: 0.968211 , precision : 1.000000, recall : 0.775641, auc: 0.887821
+2025-10-17 10:05:26,070 - model_evaluation - ERROR - Unexpected error : Empty git repo

@@ -1,0 +1,4 @@
+2025-10-17 10:00:53,547 - data_ingestion - DEBUG - Parameters retrieved from params.yaml -
+2025-10-17 10:00:54,031 - data_ingestion - DEBUG - Data loaded from https://raw.githubusercontent.com/vikashishere/Datasets/main/spam.csv -
+2025-10-17 10:00:54,034 - data_ingestion - DEBUG - Data Preproccesing Completed -
+2025-10-17 10:00:54,055 - data_ingestion - DEBUG - Train and Test data saved: ./data/raw -
